@@ -1,0 +1,24 @@
+# Use root/example as user/password credentials
+version: "3.1"
+
+services:
+  mongodb:
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGODB_USERNAME: docker
+      MONGODB_PASSWORD: docker
+      MONGODB_DATABASE: gonode3
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
