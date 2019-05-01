@@ -1,6 +1,10 @@
 # Use root/example as user/password credentials
 version: "3.1"
 
+networks:
+  redis-network:
+    driver: bridge
+
 services:
   mongodb:
     image: mongo:latest
@@ -25,3 +29,28 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: admin123
       ME_CONFIG_MONGODB_SERVER: mongodb
       ME_CONFIG_OPTIONS_EDITORTHEME: ambiance
+
+  redis:
+    image: redis:5-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    command: redis-server
+
+    networks:
+      redis-network:
+        aliases:
+          - redis-server
+
+  redis-cli2:
+    image: redis:5-alpine
+    depends_on:
+      - redis
+    links:
+      - redis
+    command: redis-cli -h redis-server
+
+    networks:
+      redis-network:
+        aliases:
+          - redis-cli
